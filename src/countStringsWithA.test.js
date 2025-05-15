@@ -16,7 +16,7 @@ test('Xử lý danh sách rỗng', () => {
 
 test('Đếm chuỗi có chữ a hoa (phân biệt chữ hoa thường)', () => {
     const input = ['Apple', 'Banana', 'Aardvark'];
-    expect(countStringsWithA(input)).toBe(2); // chỉ 'Banana' có 'a'
+    expect(countStringsWithA(input)).toBe(2); 
 });
 
 test('Danh sách có phần tử không phải chuỗi', () => {
