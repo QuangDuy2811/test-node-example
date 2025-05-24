@@ -1,26 +1,35 @@
 function switchOrder(arr, id, newOrder) {
-  // clone mảng tránh thay đổi trực tiếp
-  const newArr = [...arr];
+  const newArr = arr.map(item => ({ ...item }));
 
-  // Tìm index và object cần thay đổi
-  const index = newArr.findIndex(o => o.id === id);
-  if (index === -1) return arr;
+  const itemToMove = newArr.find(item => item.id === id);
+  if (!itemToMove) return newArr;
 
-  // Lấy object cần thay đổi, cập nhật order
-  const objToMove = {...newArr[index], order: newOrder};
-  newArr.splice(index, 1); // loại bỏ obj cũ
+  const oldOrder = itemToMove.order;
+  const maxOrder = newArr.length - 1;
+  if (newOrder < 0) newOrder = 0;
+  if (newOrder > maxOrder) newOrder = maxOrder;
 
-  // Thêm lại obj với order mới
-  newArr.push(objToMove);
+  if (oldOrder === newOrder) return newArr;
 
-  // Sắp xếp lại theo order mới (chưa đúng vị trí) => ta cần chèn đúng chỗ newOrder
-  newArr.sort((a, b) => a.order - b.order);
-
-  // Cập nhật lại order tuần tự từ 0
-  for (let i = 0; i < newArr.length; i++) {
-    newArr[i].order = i;
+  if (newOrder < oldOrder) {
+    newArr.forEach(item => {
+      if (item.order >= newOrder && item.order < oldOrder) {
+        item.order++;
+      }
+    });
+  } else {
+    newArr.forEach(item => {
+      if (item.order > oldOrder && item.order <= newOrder) {
+        item.order--;
+      }
+    });
   }
+
+  itemToMove.order = newOrder;
+
+  newArr.sort((a, b) => a.order - b.order);
 
   return newArr;
 }
+
 module.exports = switchOrder;
